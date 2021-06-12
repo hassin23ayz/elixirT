@@ -1,3 +1,7 @@
+# tuple : group a fixed number of elements together
+person = {"Bob", 25}
+IO.inspect(person)
+
 # List (can hold any type of a numbers of data)
 myLangs = [ "c", "c++", "python", "vhdl", "elixir"]
 IO.puts(myLangs)
