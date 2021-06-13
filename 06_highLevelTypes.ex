@@ -10,6 +10,7 @@ IO.puts(weekend[:friday])
 
 # mapset
 #> a store of unique values where the value can be of any type
+#> a mapset instance is also a map
 days = MapSet.new([:sunday, :tuesday, :wednesday])
 Enum.each(days, &IO.puts/1)
 IO.puts("-------------------")
