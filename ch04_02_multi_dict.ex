@@ -37,3 +37,6 @@ IO.inspect(TodoList.entries(list, ~D[2018-01-02]))
 IO.inspect(TodoList.entries(list, ~D[2018-01-03]))
 
 IO.inspect(TodoList.today_entry(list))
+
+list = TodoList.add_entry(list, ~D[2021-06-13], "Elixir-Learn")
+IO.inspect(TodoList.today_entry(list))
