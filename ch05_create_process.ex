@@ -28,6 +28,3 @@ fn_async_query = fn arg ->
 end
 # fn_async_query.(33)
 Enum.map(6..12, &fn_async_query.(&1))
-
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
