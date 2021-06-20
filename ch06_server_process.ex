@@ -28,7 +28,6 @@ defmodule DatabaseServer do
       {:run_query, caller, query_def} ->
         send(caller, {:query_result, run_query(query_def)})
     end
-
     loop()
   end
 
@@ -38,7 +37,25 @@ defmodule DatabaseServer do
   end
 end
 
-# usage
+# # usage 1
+# pid = DatabaseServer.start()
+# DatabaseServer.run_async(pid, "foo")
+# DatabaseServer.run_async(pid, "bar")
+# IO.inspect(DatabaseServer.get_result())
+# # you can do whatever you want in the client (iex) process
+# Enum.each(1..10, fn x -> IO.write("#{x} ") end)
+# # and collect the result when you need it
+# IO.inspect(DatabaseServer.get_result())
+# IO.inspect(DatabaseServer.get_result())
+
+# usage 2
 pid = DatabaseServer.start()
-DatabaseServer.run_async(pid, "foo")
+Enum.map(1..10, fn x -> DatabaseServer.run_async(pid, "#{x}") end)
+# collect a portion of the result
+Enum.map(1..5, fn _  -> IO.inspect(DatabaseServer.get_result()) end)
+# you can do whatever you want in the client (iex) process
+Enum.each(1..10, fn _ -> IO.write(". ") end)
+# and collect the result when you need it
+Enum.map(1..4, fn _  -> IO.inspect(DatabaseServer.get_result()) end)
+IO.inspect(DatabaseServer.get_result())
 IO.inspect(DatabaseServer.get_result())
