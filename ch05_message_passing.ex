@@ -24,7 +24,7 @@ end
 
 fn_async_query = fn arg ->
   caller = self()
-  spawn(fn ->send(caller, {:query, fn_run_query.(arg)}) end)
+  # spawn(fn ->send(caller, {:query, fn_run_query.(arg)}) end)
 end
 
 # message passing demo
