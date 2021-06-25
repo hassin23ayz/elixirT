@@ -10,6 +10,7 @@ defmodule Server do
   # The function send_msg() is called by clients and runs in a client process
   def send_msg(server, message) do
     # send data to the process by referring the pid as arg1 but do send own pid as self() so that it can listen in turn
+    # processes share no memory , sending a message to another process results in a deep copy of the message contents
     send(server, {self(), message})
     # right after send start listening
     receive do
@@ -51,3 +52,10 @@ Enum.each( 1..5, fn i -> spawn(fn ->
                           end)
                   end
 )
+
+# in Elixir a special case where deep copying does not take place involves binaries (including strings)
+# that are larger than 64 bytes. These are maintained on a special shared binary heap and sending them
+# does not result in a deep copy
+
+# as processes shared no memory so you don't need complicated synchronization mechanisms such as locks and mutexes
+# GC garbage collection takes place at process level
