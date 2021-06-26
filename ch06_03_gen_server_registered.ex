@@ -10,6 +10,9 @@
 # > GenServer
 # > supervisor
 
+# <<GenServer>> is Actor Model
+# process of GenServer is OTP complaint
+
 defmodule KeyValueStore do
   use GenServer                          # the use macro injects a bunch of function in the calling module
 
