@@ -18,6 +18,7 @@ defmodule KeyValueStore do
   end
 
   def init(_) do                         # takes 2nd argument of GenServer.start/2
+    :timer.send_interval(5000, :cleanup) # sets up periodic message sending
     {:ok, %{}}                           # return format must be {:ok, initial_state}
                                          # returns an empty map
   end
@@ -28,16 +29,23 @@ defmodule KeyValueStore do
                                                 # GenServer.call/2 doesn’t wait indefinitely for a response.
                                                 # By default, if the response message doesn’t arrive in five seconds,
                                                 # an error is raised in the client process.
+  @impl GenServer                               # tells the compiler that the function about to be defined is a callback function for the GenServer behaviour.
   def handle_call({:get, key}, _, state) do     # handle_call/3 takes the request, the caller information {request_id, pid}, and the state.
     {:reply, Map.get(state, key), state}        # return format must be {:reply, response, new_state}.
   end
 
   def put(pid, key, value) do
-    GenServer.cast(pid, {:put, key, value})
+    GenServer.cast(pid, {:put, key, value})     # msg sent to server process is more than request payload
+                                                # there is additional data such as the request type
   end
 
   def get(pid, key) do
     GenServer.call(pid, {:get, key})
+  end
+
+  def handle_info(:cleanup, state) do
+    IO.puts "performing cleanup..."
+    {:noreply, state}
   end
 end
 
