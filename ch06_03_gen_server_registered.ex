@@ -51,6 +51,10 @@ defmodule KeyValueStore do
     IO.puts "performing cleanup..."
     {:noreply, state}
   end
+
+  def end_the_process do
+    GenServer.stop(__MODULE__, :normal)
+  end
 end
 
 # usage
@@ -60,3 +64,6 @@ KeyValueStore.put(:b, 2)
 IO.inspect(KeyValueStore.get(:a))
 IO.inspect(KeyValueStore.get(:b))
 IO.inspect(KeyValueStore.get(:c))
+
+Process.sleep(20000)
+KeyValueStore.end_the_process()
