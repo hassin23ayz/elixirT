@@ -54,7 +54,7 @@ defmodule TodoServer do
   end
 
   def init(_) do
-    {:ok, TodoList.new()}
+    {:ok, TodoList.new()} #TodoServer data type is TodoList
   end
 
   def handle_cast({:add_entry, new_entry}, state) do
