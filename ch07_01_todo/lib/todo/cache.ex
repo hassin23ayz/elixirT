@@ -17,32 +17,31 @@ defmodule Todo.Cache do
   end
 
   @impl GenServer
-  def handle_cast({:add_elem, name}, state) do
-    {:ok, new_server} = Todo.Server.start(name)
-    {:noreply, Map.put(state, name, new_server)}
+  def handle_cast({:add_elem, name_atom}, state) do
+    {:ok, new_server} = Todo.Server.start(name_atom)
+    {:noreply, Map.put(state, name_atom, new_server)}
   end
 
   def add_elem(name) do           # usage example : $iex> Todo.Cache.add_elem(:user1)
-    GenServer.cast(__MODULE__, {:add_elem, name})
+    name_atom = String.to_atom(name)
+    GenServer.cast(__MODULE__, {:add_elem, name_atom})
   end
 
-  # def query_elem(name) do
-  #   GenServer.call(__MODULE__, {:get_elem, name})
-  # end
+  def query_elem(name) do
+    name_atom = String.to_atom(name)
+    GenServer.call(__MODULE__, {:get_elem, name_atom})
+  end
 
-  # defp find_elem(items, name) do
-  #   case Map.fetch(items, name) do
-  #     :error ->
-  #       IO.puts("no match, creating new ")
-  #       add_elem(name)
-  #     {:ok, elem_found} ->
-  #       IO.puts("elem found")
-  #       elem_found
-  #   end
-  # end
-
-  # def handle_call({:get_elem, name}, _ , state) do
-  #   {:reply, find_elem(state, name), state}
-  # end
+  @impl GenServer
+  def handle_call({:get_elem, name_atom}, _ , state) do
+    {:reply, Map.get(state, name_atom), state}
+  end
 
 end
+
+
+# usage
+# Todo.Cache.start()
+# Enum.each(1..100, fn index -> Todo.Cache.add_elem("user #{index}") end)
+# Todo.Cache.query_elem("user 99")
+# Todo.Cache.query_elem("user 1")
