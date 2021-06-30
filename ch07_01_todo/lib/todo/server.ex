@@ -1,9 +1,9 @@
 defmodule Todo.Server do
   use GenServer
 
-  def start(server_name) do   # passed arg server_name must be of type :Atom
+  def start() do              # passed arg server_name must be of type :Atom
                               # for example $iex> Todo.Server.start(:hassin)
-    GenServer.start(Todo.Server, nil, name: server_name)
+    GenServer.start(Todo.Server, nil)
   end
 
   @impl GenServer

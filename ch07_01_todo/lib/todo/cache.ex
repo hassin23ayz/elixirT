@@ -17,24 +17,22 @@ defmodule Todo.Cache do
   end
 
   @impl GenServer
-  def handle_cast({:add_elem, name_atom}, state) do
-    {:ok, new_server} = Todo.Server.start(name_atom)
-    {:noreply, Map.put(state, name_atom, new_server)}
+  def handle_cast({:add_elem, name}, state) do
+    {:ok, new_server} = Todo.Server.start()
+    {:noreply, Map.put(state, name, new_server)}
   end
 
-  def add_elem(name) do           # usage example : $iex> Todo.Cache.add_elem(:user1)
-    name_atom = String.to_atom(name)
-    GenServer.cast(__MODULE__, {:add_elem, name_atom})
+  def add_elem(name) do           # usage example : $iex> Todo.Cache.add_elem("user1")
+    GenServer.cast(__MODULE__, {:add_elem, name})
   end
 
   def query_elem(name) do
-    name_atom = String.to_atom(name)
-    GenServer.call(__MODULE__, {:get_elem, name_atom})
+    GenServer.call(__MODULE__, {:get_elem, name})
   end
 
   @impl GenServer
-  def handle_call({:get_elem, name_atom}, _ , state) do
-    {:reply, Map.get(state, name_atom), state}
+  def handle_call({:get_elem, name}, _ , state) do
+    {:reply, Map.get(state, name), state}
   end
 
 end
