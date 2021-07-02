@@ -10,6 +10,11 @@
 # > GenServer
 # > supervisor
 
+# singleton
+# if a GenServer process is locally registered under the name: __MODULE__;
+# this keeps things simple and relieves you from passing around the pid.
+# Of course, a downside is that you can run only one instance of the GenServer process.
+
 defmodule KeyValueStore do
   use GenServer                          # the use macro injects a bunch of function in the calling module
 
@@ -21,6 +26,7 @@ defmodule KeyValueStore do
                                          # time most frequent approach is to use the same name as the module name __MODULE__
                                          # GenServer.start(__MODULE__, nil, name: __MODULE__)
                                          # __MODULE__ imposes Singleton, leave it blank to allow creating multiple instances
+
   end
 
   def init(_) do                         # takes 2nd argument of GenServer.start/2
