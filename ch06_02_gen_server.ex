@@ -19,7 +19,8 @@ defmodule KeyValueStore do
   use GenServer                          # the use macro injects a bunch of function in the calling module
 
   def start do
-    GenServer.start(KeyValueStore, nil)  # starts the process, the GenServer behavioUr takes KeyValueStore as the callback module
+    GenServer.start(KeyValueStore, nil)  # starts the process,
+                                         # the GenServer behavioUr takes 1st arg = KeyValueStore as the callback module
                                          # the 2nd arg (nil) is passed to init()
                                          # returns {:ok, pid}
                                          # a 3rd argument can register the created process under a local name
