@@ -1,9 +1,10 @@
 defmodule Todo.Server do
   use GenServer
 
-  def start() do              # passed arg server_name must be of type :Atom
-                              # for example $iex> Todo.Server.start(:hassin)
-    GenServer.start(Todo.Server, nil)
+  def start() do
+    GenServer.start(__MODULE__, nil) # 3rd arg name: __MODULE__ imposes Singleton
+                                     # here it is empty so that multiple instances of this
+                                     # GenServer type module can be created
   end
 
   @impl GenServer
@@ -21,11 +22,13 @@ defmodule Todo.Server do
     {:reply, Todo.List.entries(state, date), state}
   end
 
-  def add_entry(new_entry) do
-    GenServer.cast(__MODULE__ , {:add_entry, new_entry})
+  def add_entry(pid, new_entry) do
+    GenServer.cast(pid , {:add_entry, new_entry}) # 1st arg is not __MODULE__ ,
+                                                  # letting multiple instances to be used
   end
 
-  def entries(date) do
-    GenServer.call(__MODULE__, {:entries, date})
+  def entries(pid, date) do
+    GenServer.call(pid, {:entries, date})         # 1st arg is not __MODULE__ ,
+                                                  # letting multiple instances to be used
   end
 end

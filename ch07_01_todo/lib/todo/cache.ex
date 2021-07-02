@@ -6,7 +6,7 @@ defmodule Todo.Cache do
   use GenServer
 
   def start do
-    GenServer.start(__MODULE__, nil, name: __MODULE__)
+    GenServer.start(__MODULE__, nil, name: __MODULE__) # name: __MODULE__ imposes Singleton
   end
 
   # creates an empty map
@@ -23,11 +23,11 @@ defmodule Todo.Cache do
   end
 
   def add_elem(name) do           # usage example : $iex> Todo.Cache.add_elem("user1")
-    GenServer.cast(__MODULE__, {:add_elem, name})
+    GenServer.cast(__MODULE__, {:add_elem, name}) # 1st arg: __MODULE__ imposes Singleton
   end
 
   def query_elem(name) do
-    GenServer.call(__MODULE__, {:get_elem, name})
+    GenServer.call(__MODULE__, {:get_elem, name}) # 1st arg: __MODULE__ imposes Singleton
   end
 
   @impl GenServer

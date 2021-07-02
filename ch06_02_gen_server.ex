@@ -20,6 +20,7 @@ defmodule KeyValueStore do
                                          # a 3rd argument can register the created process under a local name
                                          # time most frequent approach is to use the same name as the module name __MODULE__
                                          # GenServer.start(__MODULE__, nil, name: __MODULE__)
+                                         # __MODULE__ imposes Singleton, leave it blank to allow creating multiple instances
   end
 
   def init(_) do                         # takes 2nd argument of GenServer.start/2
@@ -40,6 +41,7 @@ defmodule KeyValueStore do
   def put(pid, key, value) do
     GenServer.cast(pid, {:put, key, value})     # msg sent to server process is more than request payload
                                                 # there is additional data such as the request type
+                                                # __MODULE__ instead of pid , imposes Singleton
   end
 
   def get(pid, key) do
@@ -47,6 +49,7 @@ defmodule KeyValueStore do
                                                 # By default, if the response message doesn’t arrive in five seconds,
                                                 # an error is raised in the client process.
                                                 # you can alter this by using GenServer.call(pid, request, timeout) //timeout is given in ms
+                                                # __MODULE__ instead of pid , imposes Singleton
   end
 
   def handle_info(:cleanup, state) do
