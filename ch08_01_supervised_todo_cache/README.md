@@ -1,6 +1,17 @@
 # Ch08_01SupervisedTodoCache
 
-**TODO: Add description**
+A supervisor is a generic process that manages the lifecycle of other processes in a system 
+A supervisor process can start other processes [childrens] 
+supervisor uses links , monitors & exit traps 
+processes that are not supervisors are called workers : provides actual services of the system
+you need atleast one supervisor process in the system 
+if a supervisor process terminates, the children are also taken down 
+------------------
+< proper error recovery approach > 
+you can detect error in any part of the system and recover from it without leaving behind dangling processes by linking all the processes
+
+< supervisor limit>
+A Supervisor won't restart a child process forever , The maximum restart frequency is three restarts in 5 seconds. After the maximum restart frequency was exceeded , the supervisor gave up and terminated , taking down all the child processes with it 
 
 ## Installation
 
