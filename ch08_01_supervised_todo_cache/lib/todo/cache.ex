@@ -1,7 +1,7 @@
 defmodule Todo.Cache do
-  use GenServer
+  use GenServer                       # generates the default child spec/1
 
-  def start_link(_) do
+  def start_link(_) do                # has to have an argument , conforms to the default child spec/1
     IO.puts("Starting to-do cache.")
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
