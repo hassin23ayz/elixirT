@@ -1,6 +1,13 @@
 # Ch09_01SuperviseDatabase
 
-**TODO: Add description**
+> if all the process/GenServer are linked together then an error in one of the processes will make the total system crash
+  and SuperVisor will restart it . But supervisor can also isolate error effects  
+
+> restarting the whole system and leaving behind all dangling processes is a correct error handling approach but 
+such a recovery approach is too coarse 
+
+> isolation of error allows other parts of the system to run and provide service to while you are recovering 
+from the error . this makes the system more available to its clients
 
 ## Installation
 
