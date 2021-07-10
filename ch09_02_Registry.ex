@@ -9,11 +9,13 @@
 # Registry Module of Elixir Standard library can help us in this regard
 # In Registry Module processes can be stored as a key based lookup
 
+# usage
 # the process Registry itself is a process
-# :name is the Registry Name
+# name: is the Registry Name
 Registry.start_link(name: :my_registry, keys: :unique)
 
 # now Let's Register a Process
+# keys: :unique means 2nd arg e.g. {:recv_process, 1} bundle should be unique
 spawn(fn ->
   Registry.register(:my_registry, {:recv_process, 1}, nil) # 1st arg : name of the registry
                                                            # 2nd arg : name of the spawned process
@@ -26,8 +28,4 @@ spawn(fn ->
 end)
 
 # discovering the process
-# [{recv_process_pid, value}] = Registry.lookup(:my_registry, {:recv_process, 1})
-
-# IO.inspect(recv_process_pid)
-# IO.inspect(value)
-IO.inspect(Registry.lookup(:my_registry, {:recv_process, 1}))
+Registry.lookup(:my_registry, {:recv_process, 1})
