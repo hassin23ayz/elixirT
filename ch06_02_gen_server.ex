@@ -34,6 +34,7 @@ defmodule KeyValueStore do
     :timer.send_interval(5000, :cleanup) # sets up periodic message sending
     {:ok, %{}}                           # return format must be {:ok, initial state} state is the data of this module
                                          # returns an empty map
+                                         # init should not run for a long time s
   end
 
   def handle_cast({:put, key, value}, state) do # handle_cast/2 accepts the request and the state
