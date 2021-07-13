@@ -8,8 +8,10 @@ defmodule KeyValueStore do
   # type 1 [calling function of Registry]
   # Registry.register(:name_of_the_registry_created_before, {:process_name, process_Key}, arbtry_value)
   # type 2 [passing a tuple as the 3rd arg to GenServer.start_link() function]
-  # {:via, Registry, {:name_of_the_registry_created_before, {:process_name, process_Key}}}
-
+  # tuple shape is {:via, Registry, {registry_name, process_key}}
+  #                {:via, Registry, {registry_name, registered_key}}
+  #                {:via, Registry, {registry_name, {__MODULE__, id}}}
+  # in type 2 registration The GenServer will invoke a well defined Function of Registry Module to register the process
   defp get_registry_type_tuple(pid_key) do
     {:via, Registry, {:my_registry, {__MODULE__, pid_key}}}
   end
