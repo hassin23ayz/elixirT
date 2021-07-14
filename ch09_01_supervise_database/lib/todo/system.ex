@@ -8,7 +8,8 @@
 defmodule Todo.System do
   def start_link do
     Supervisor.start_link(
-      [
+      [                          # order of the child specifications matter
+        Todo.ProcessRegistry,
         Todo.Database,
         Todo.Cache
       ],
