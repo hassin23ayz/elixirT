@@ -34,6 +34,10 @@ end
 # cache_pid = Process.whereis(Todo.Cache)
 # Process.exit(cache_pid, :kill)
 # Process.whereis(Todo.Cache)
-# cache_db = Process.whereis(Todo.Database)
-# Process.exit(cache_db, :kill)
-# Process.whereis(Todo.Database)
+
+# << kill>restart of one Todo.Server process does not impact other >>
+# bobs_list = Todo.Cache.server_process("Bob's list")
+# alices_list = Todo.Cache.server_process("Alice's list")
+# Process.exit(bobs_list, :kill)
+# Todo.Cache.server_process("Bob's list")
+# Todo.Cache.server_process("Alice's list")

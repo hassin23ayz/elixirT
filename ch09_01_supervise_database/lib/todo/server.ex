@@ -1,10 +1,9 @@
 defmodule Todo.Server do
-  use GenServer
-
+  use GenServer, restart: :temporary # :temporary means do not restart thyself rather wait for the upper level supervisor that owns it to act upon
+                                     # :transient means restart thyself if process terminates abnormally
   def start_link(name) do
-    IO.puts("Starting to-do server for #{name}.")
-
-    GenServer.start_link(Todo.Server, name)
+    # this module processes also registers at the Registry (Todo.ProcessRegistry)
+    GenServer.start_link(Todo.Server, name, name: via_tuple(name))
   end
 
   def add_entry(todo_server, new_entry) do
@@ -15,8 +14,13 @@ defmodule Todo.Server do
     GenServer.call(todo_server, {:entries, date})
   end
 
+  defp via_tuple(name) do
+    Todo.ProcessRegistry.via_tuple({__MODULE__, name})
+  end
+
   @impl GenServer
   def init(name) do
+    IO.puts("Starting to-do server for #{name}.")
     {:ok, {name, Todo.Database.get(name) || Todo.List.new()}}
   end
 

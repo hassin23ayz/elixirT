@@ -3,7 +3,7 @@ defmodule Todo.DatabaseWorker do
 
   # processes of this module needs to get registered with the Registry Module
   def start_link({db_folder, worker_id}) do
-    IO.puts("Starting database worker.")
+    IO.puts("Starting database worker #{worker_id}")
 
     GenServer.start_link(
       __MODULE__,

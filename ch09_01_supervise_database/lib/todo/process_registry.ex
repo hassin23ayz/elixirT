@@ -6,8 +6,8 @@ defmodule Todo.ProcessRegistry do             # this module helps us to use the 
   def via_tuple(key) do                       # replies a Tuple , later used by GenServer Based processes to register with this Registry
     {:via, Registry, {__MODULE__, key}}
   end
-
-  def child_spec(_) do                        # this module is not of GenServer or SuperVisor type so it needs explicit chile_spec definition (Registry child_spec has been used)
+                                              # this module needs child specification so that Supervisor.start_link() of System module can use invoke it as a child
+  def child_spec(_) do                        # this module is not of GenServer or SuperVisor type so it needs explicit child_spec definition (Registry child_spec has been used)
     Supervisor.child_spec(
       Registry,
       id: __MODULE__,
