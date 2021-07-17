@@ -38,3 +38,5 @@ end
 # benchmark usage
 # mix run -e "Bench.run(EtsKeyValue)"
 # mix run -e "Bench.run(EtsKeyValue, concurrency: 1000, num_updates: 100)"
+
+self()
