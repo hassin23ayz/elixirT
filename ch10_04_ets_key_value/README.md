@@ -23,6 +23,16 @@ other processes depend.
 -the element can be any Erlang term, including deep hierarchy of nested lists, tuples, maps or anything else you can store in a variable 
 -By default ETS tables are of set type: meaning you can't store multiple tuples with the same key 
 
+-processes lose their state on termination. If you want to preserve state across process restarts, the simplest way is to use a public ETS table as a means of providing in-memory state persistence
+
+-downside of ETS tables is that unlike plain data, they can’t be sent over the network to another BEAM instance. That means relying on ETS makes it harder to take advantage of distribution facilities
+
+-In general, you should avoid using ETS and instead favor immutable structures as much as possible. Resort to ETS only in cases where you can obtain significant performance gains.
+
+-DETS (Disk based ETS) each table is managed in a single file 
+
+
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
