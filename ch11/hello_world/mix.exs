@@ -20,6 +20,9 @@ defmodule HelloWorld.MixProject do
       mod: {HelloWorld.Application, []}                      # tuple 1st elem: describes the Module that will be used to start the application
                                                              # tuple 2nd elem: when Application starts the Module.start() funtion gets invoked
                                                              #                 with the [] as argument
+
+                                                             # you dont need to provide the mod: option if you want to make Library
+                                                             # in this case there will be no top level process
     ]
   end
 
