@@ -38,4 +38,5 @@ be found at [https://hexdocs.pm/hello_world](https://hexdocs.pm/hello_world).
 $mix new hello_world --sup
 $iex -S mix
 >Application.started_applications()
-
+>Application.stop(:hello_world)
+>System.stop()
