@@ -1,43 +1,33 @@
 defmodule Todo.Database do
-  @pool_size 3
   @db_folder "./persist"
 
-  def start_link() do
+  # this definition is needed for This module aka Todo.Database so that it can be a child when Supervisor.start_link() is called from Todo.System
+  # this child_spec inherits :poolboy child specification
+  def child_spec(_) do
     File.mkdir_p!(@db_folder)
 
-    # This Module itself acts as a supervisor. it's children processes are Todo.DatabaseWorker type
-    children = Enum.map(1..@pool_size, &worker_spec/1)
-    Supervisor.start_link(children, strategy: :one_for_one)
-  end
-
-  defp worker_spec(worker_id) do
-    default_worker_spec = {Todo.DatabaseWorker, {@db_folder, worker_id}}
-    Supervisor.child_spec(default_worker_spec, id: worker_id)           # reply by child type
-  end
-
-  # this definition is needed for This module aka Todo.Database so that it can be a child when Supervisor.start_link() is called from Todo.System
-  def child_spec(_) do
-    %{
-      id: __MODULE__,
-      start: {__MODULE__, :start_link, []},
-      type: :supervisor        # this module's type
-    }
+    :poolboy.child_spec(
+      __MODULE__,                             # child ID ( needed by Supervisor Todo.System )
+      [                                       # List (pool options)
+        name: {:local, __MODULE__},           # Local Registration
+        worker_module: Todo.DatabaseWorker,   # Specifies the module that will power each worker process
+        size: 3                               # pool size
+      ],
+      [@db_folder]                            # list of argument passed to each worker's start_link function
+    )
   end
 
   def store(key, data) do
-    key
-    |> choose_worker()
-    |> Todo.DatabaseWorker.store(key, data)
+    :poolboy.transaction(                     # checkout req to pool manager > fetch a single worker
+      __MODULE__,                             # registered name of the pool manager (_FP_)
+      fn worker_pid -> Todo.DatabaseWorker.store(worker_pid, key, data) end  # Lamba gets fetched worker pid as arg > Lambda gets invoked
+    )                                         # after lambda gets finished , worker is returned
   end
 
   def get(key) do
-    key
-    |> choose_worker()
-    |> Todo.DatabaseWorker.get(key)
+    :poolboy.transaction(
+      __MODULE__,
+      fn worker_pid -> Todo.DatabaseWorker.get(worker_pid, key) end
+    )
   end
-
-  defp choose_worker(key) do
-    :erlang.phash2(key, @pool_size) + 1
-  end
-
 end
