@@ -12,6 +12,7 @@ defmodule Todo.System do
         Todo.ProcessRegistry,
         Todo.Database,
         Todo.Cache,
+        Todo.Web,
         Todo.Metrics
       ],
       strategy: :one_for_one
