@@ -24,3 +24,19 @@ $curl 'http://localhost:5454/entries?list=bob&date=2018-12-19'
 
 >Application.stop(:todo_http)
 >System.stop()
+
+-Benchmark
+--wrk install
+$git clone https://github.com/wg/wrk
+$sudo apt-get install make
+$make -j8
+$sudo apt-get install gcc
+$sudo apt-get update
+$sudo apt-get install gcc
+$make -j8
+$make WITH_LUAJIT=/usr WITH_OPENSSL=/usr
+$sudo cp wrk /usr/local/bin
+
+-Testing
+$wrk -t12 -c400 -d30s http://localhost:5454/add_entry?list=bob&date=2018-12-19&title=Dentist
+$wrk -t12 -c400 -d30s http://localhost:5454/entries?list=bob&date=2018-12-19
