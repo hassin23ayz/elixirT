@@ -1,10 +1,12 @@
 defmodule Todo.Database do
-  @db_folder "./persist"
 
   # this definition is needed for This module aka Todo.Database so that it can be a child when Supervisor.start_link() is called from Todo.System
   # this child_spec inherits :poolboy child specification
   def child_spec(_) do
-    File.mkdir_p!(@db_folder)
+    db_settings = Application.fetch_env!(:todo_http, :database)
+    db_folder   = Keyword.fetch!(db_settings, :folder)
+
+    File.mkdir_p!(db_folder)
 
     :poolboy.child_spec(
       __MODULE__,                             # child ID ( needed by Supervisor Todo.System )
@@ -13,7 +15,7 @@ defmodule Todo.Database do
         worker_module: Todo.DatabaseWorker,   # Specifies the module that will power each worker process
         size: 3                               # pool size
       ],
-      [@db_folder]                            # list of argument passed to each worker's start_link function
+      [db_folder]                            # list of argument passed to each worker's start_link function
     )
   end
 
