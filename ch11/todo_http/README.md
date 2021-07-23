@@ -38,5 +38,15 @@ $make WITH_LUAJIT=/usr WITH_OPENSSL=/usr
 $sudo cp wrk /usr/local/bin
 
 -Testing
-$wrk -t12 -c400 -d30s http://localhost:5454/add_entry?list=bob&date=2018-12-19&title=Dentist
-$wrk -t12 -c400 -d30s http://localhost:5454/entries?list=bob&date=2018-12-19
+$wrk -t12 -c400 -d30s 'http://localhost:5454/add_entry?list=bob&date=2018-12-19&title=Dentist'
+$wrk -t12 -c400 -d30s 'http://localhost:5454/entries?list=bob&date=2018-12-19'
+
+Cast operations are fire and forget type 
+Call operations promotes consistency but reduces responsiveness of the system 
+
+Keeping call operations , we can introduce a new process in between. this process will add the request to it's queue and reply will be send immediately . Later when the added requests gets processed a subsequent notification will be sent back . 
+this way system becomes both responsive and consistent 
+
+- if more complex load management is desired then GenStage can be used 
+
+

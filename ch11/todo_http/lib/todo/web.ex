@@ -20,6 +20,7 @@ defmodule Todo.Web do
   # conn var holds the TCP socket + information about the state of the request you are processing
   post "/add_entry" do
     conn = Plug.Conn.fetch_query_params(conn)                   # get a new version of the conn structure
+    #IO.inspect(conn.params)
     list_name = Map.fetch!(conn.params, "list")                 # parse list
     title = Map.fetch!(conn.params, "title")                    # parse title
     date = Date.from_iso8601!(Map.fetch!(conn.params, "date"))  # parse date
@@ -36,6 +37,7 @@ defmodule Todo.Web do
   # curl 'http://localhost:5454/entries?list=bob&date=2018-12-19'
   get "/entries" do
     conn = Plug.Conn.fetch_query_params(conn)
+    #IO.inspect(conn.params)
     list_name = Map.fetch!(conn.params, "list")
     date = Date.from_iso8601!(Map.fetch!(conn.params, "date"))
 
