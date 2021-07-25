@@ -58,5 +58,11 @@ defmodule Todo.Server do
     }
   end
 
+  @impl GenServer
+  def handle_info(:timeout, {name, todo_list}) do
+    IO.puts("Stopping to-do server for #{name}")
+    {:stop, :normal, {name, todo_list}}
+  end
+
   defp expiry_idle_timeout(), do: Application.fetch_env!(:todo_distributed, :todo_item_expiry)
 end

@@ -13,7 +13,7 @@ defmodule Todo.System do
         Todo.Database,
         Todo.Cache,
         Todo.Web,
-        Todo.Metrics
+        #Todo.Metrics
       ],
       strategy: :one_for_one
     )

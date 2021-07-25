@@ -49,3 +49,23 @@ changes:
 	:rpc allows to issue a function call on all nodes in the cluster
 	Use of :rpc multicall to store database items to both remote and own node
 
+#usage 
+open 2 terminals and cd to this project root 
+$ iex --sname node1@localhost -S mix
+$ iex --erl "-todo_distributed port 5555" --sname node2@localhost -S mix
+
+node1> Node.connect(:node2@localhost)
+
+open another terminal and operate on node 1 
+$ curl -d '' 'http://localhost:5454/add_entry?list=bob&date=2018-12-19&title=Dentist'
+self verify (node 1) 
+$ curl 'http://localhost:5454/entries?list=bob&date=2018-12-19'
+
+verify at other node (node 2)
+$ curl 'http://localhost:5555/entries?list=bob&date=2018-12-19'
+
+crash / stop one Node (node 1)
+node1> System.stop()
+
+read from another Node (node 2)
+$ curl 'http://localhost:5555/entries?list=bob&date=2018-12-19'
