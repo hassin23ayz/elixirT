@@ -69,3 +69,36 @@ node1> System.stop()
 
 read from another Node (node 2)
 $ curl 'http://localhost:5555/entries?list=bob&date=2018-12-19'
+
+----------------------------------------------------------------------------------------
+-You should set up a load balancer to serve as a single access point for all clients.
+-You need a scheme for introducing new nodes to the running cluster. When a
+new node is introduced, it should first synchronize the database with one of the
+already-connected nodes; then it can begin serving requests.
+
+-By using the built-in Mnesia database, you could achieve better write guarantees
+and be able to easily migrate new nodes to the cluster.Mnesia
+doesn’t deal explicitly with network partitions and split-brain scenarios, and instead
+leaves it to the developer to resolve this situation
+
+-When you decide to go distributed, network partitions are a problem you’ll have to deal with,
+one way or another.
+
+-A process that calls monitor_nodes will receive notifications
+whenever a remote node connects or disconnects
+
+-You can set up a monitor or a link to a remote process.
+This works just as it does with local processes. If a remote process crashes (or the
+node disconnects), you’ll receive an exit signal (when using links).
+
+-A connection between a long-named node and a short-named node isn’t possible.
+
+-A node running on another machine will have a different cookie, so connecting two nodes on different
+machines won’t work by default; you need to somehow make all nodes use the same cookie.
+Cookie can be set when you start the system. 
+
+-Helper Nodes can be connected with hidden connection . 
+When you want to perform a cluster-wide operation, you should generally use the :visible option
+Services provided by :global, :rpc, and :pg2 ignore hidden nodes.
+
+-EPMD knows the names of all currently running BEAM nodes on the machine 
