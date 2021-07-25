@@ -3,7 +3,7 @@ defmodule Todo.Database do
   # this definition is needed for This module aka Todo.Database so that it can be a child when Supervisor.start_link() is called from Todo.System
   # this child_spec inherits :poolboy child specification
   def child_spec(_) do
-    db_settings = Application.fetch_env!(:todo_http, :database)
+    db_settings = Application.fetch_env!(:todo_distributed, :database)
     db_folder   = Keyword.fetch!(db_settings, :folder)
 
     File.mkdir_p!(db_folder)

@@ -15,20 +15,26 @@ defmodule Todo.Cache do
     }
   end
 
+  # if existing process is not nil then returns existing process
+  # if existing process is nil then returns new process
   def server_process(todo_list_name) do
-    case start_child(todo_list_name) do
-      {:ok, pid} -> pid
-      {:error, {:already_started, pid}} -> pid
-    end
+    existing_process(todo_list_name) || new_process(todo_list_name)
+  end
+
+  defp existing_process(todo_list_name) do
+    Todo.Server.whereis(todo_list_name)
   end
 
   # this module acts as dynamic supervisor for Todo.Server processes
   # DynamicSupervisor is similar to Supervisor, but where Supervisor is used to start
   # a predefined list of children, DynamicSupervisor is used to start children on demand
-  defp start_child(todo_list_name) do
+  defp new_process(todo_list_name) do
     # The specification {Todo.Server, todo_list_name} will lead to the invocation of Todo.Server.start_link(todo_list_name).
     # The to-do server will be started as the child of the Todo.Cache supervisor( this module)
-    DynamicSupervisor.start_child(__MODULE__, {Todo.Server, todo_list_name})
+    case DynamicSupervisor.start_child(__MODULE__, {Todo.Server, todo_list_name}) do
+      {:ok, pid} -> pid
+      {:error, {:already_started, pid}} -> pid
+    end
   end
 
 end

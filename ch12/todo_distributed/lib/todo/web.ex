@@ -7,7 +7,7 @@ defmodule Todo.Web do
   def child_spec(_arg) do
     Plug.Adapters.Cowboy.child_spec( # returns child spec of processes responsible for the HTTP server part
       scheme: :http,
-      options: [port: Application.fetch_env!(:todo_http, :port)],
+      options: [port: Application.fetch_env!(:todo_distributed, :port)],
       plug: __MODULE__               # the module which has the callback function to handle request
     )                                # it is possible to run multiple HTTP servers in the system
   end                                # for example adding another HTTP server for administration purposes
