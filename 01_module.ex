@@ -21,3 +21,7 @@ defmodule PlayGround do
   # single line function
   def volume(x,y,z), do: x * y * z
 end
+
+#alias example
+
+alias PlayGround, as: PG
