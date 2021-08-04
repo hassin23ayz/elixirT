@@ -1,4 +1,4 @@
-# lamda function : a function definition assigned to a variable
+# lamda function : a function definition assigned to a variable = anonymous function
 s = fn x -> x*x end
 s.(2)
 
