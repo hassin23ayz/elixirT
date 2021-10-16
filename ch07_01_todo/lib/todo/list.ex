@@ -1,5 +1,6 @@
 # the module name should be in accordance with the folder
 defmodule Todo.List do
+  # Structs take the name of the module they’re defined in.
   defstruct auto_id: 1, entries: %{}
 
   def new(entries \\ []) do
